@@ -21,7 +21,9 @@ import static com.google.common.util.concurrent.Uninterruptibles.awaitTerminatio
 import static com.google.common.util.concurrent.Uninterruptibles.awaitUninterruptibly;
 import static com.google.common.util.concurrent.Uninterruptibles.joinUninterruptibly;
 import static com.google.common.util.concurrent.Uninterruptibles.putUninterruptibly;
+import static com.google.common.util.concurrent.Uninterruptibles.offerUninterruptibly;
 import static com.google.common.util.concurrent.Uninterruptibles.takeUninterruptibly;
+import static com.google.common.util.concurrent.Uninterruptibles.pollUninterruptibly;
 import static com.google.common.util.concurrent.Uninterruptibles.tryAcquireUninterruptibly;
 import static com.google.common.util.concurrent.Uninterruptibles.tryLockUninterruptibly;
 import static java.util.concurrent.Executors.newFixedThreadPool;
@@ -213,6 +215,13 @@ public class UninterruptiblesTest extends TestCase {
     assertTimeNotPassed(stopwatch, LONG_DELAY_MS);
     assertEquals("", queue.peek());
   }
+
+  public void testOfferWithNoWait() {
+    Stopwatch stopwatch = Stopwatch.createStarted();
+    BlockingQueue<String> queue = new ArrayBlockingQueue<>(999);
+
+  }
+
 
   public void testPutNoInterrupt() {
     TimedPutQueue queue = TimedPutQueue.createWithDelay(20);

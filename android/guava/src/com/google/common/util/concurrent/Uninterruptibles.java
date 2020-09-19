@@ -273,6 +273,44 @@ public final class Uninterruptibles {
     }
   }
 
+  /** Invokes {@code queue.}{@link BlockingQueue#poll() poll()} uninterruptibly. */
+  @GwtIncompatible //concurrency
+  public static <E> E pollUninterruptibly(BlockingQueue<E> queue, long timeout, TimeUnit unit) {
+    boolean interrupted = false;
+    try {
+      while (true) {
+        try {
+          return queue.poll(timeout, unit);
+        } catch (InterruptedException e) {
+          interrupted = true;
+        }
+      }
+    } finally {
+      if (interrupted) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+
+  /** Invokes {@code queue.}{@link BlockingQueue#offer(E e, long timeout, TimeUnit unit) offer(E e, long timeout, TimeUnit unit)} uninterruptibly. */
+  @GwtIncompatible //concurrency
+  public static <E> boolean offerUninterruptibly(BlockingQueue<E> queue, E element, long timeout, TimeUnit unit) {
+    boolean interrupted = false;
+    try {
+      while (true) {
+        try {
+          return queue.offer(element, timeout, unit);
+        } catch (InterruptedException e) {
+          interrupted = true;
+        }
+      }
+    } finally {
+      if (interrupted) {
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+
   /**
    * Invokes {@code queue.}{@link BlockingQueue#put(Object) put(element)} uninterruptibly.
    *
